@@ -71,9 +71,12 @@ function makePdf(i){const E=t=>String(t).replace(/[^\x20-\x7e]/g,'?').replace(/(
  return new Blob([Uint8Array.from(s,ch=>ch.charCodeAt(0))],{type:'application/pdf'})}
 const save=(blob,name)=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3e3)};
 $('#bPdf').onclick=()=>{save(makePdf(current),current.number+'.pdf');toast('PDF downloaded')};
+$('#bShare').onclick=async()=>{const f=new File([makePdf(current)],current.number+'.pdf',{type:'application/pdf'});
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Invoice '+current.number,text:'Invoice '+current.number+' from Yan Biyu Global Concept'})}
+ else{save(f,f.name);toast('Sharing not supported here – PDF downloaded instead')}}catch(e){if(e.name!=='AbortError'){save(f,f.name);toast('Could not share – PDF downloaded instead')}}};
 /* ---- dashboard & history ---- */
 const list=(a,actions)=>a.length?`<div class="scroll"><table><thead><tr><th>No.</th><th>Date</th><th>Customer</th><th>Total</th><th></th></tr></thead><tbody>${a.map(i=>`<tr><td>${esc(i.number)}</td><td>${esc(i.date)}</td><td>${esc(i.name)}</td><td>${fmt(i.total)}</td><td style="white-space:nowrap"><button data-open="${i.id}">View</button> ${actions?`<button data-print="${i.id}">Print</button> <button class="danger" data-del="${i.id}">Delete</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<p>No invoices yet.</p>';
-async function renderDash(){const a=await getAll();$('#dCount').textContent=a.length;$('#dSales').textContent=fmt(a.reduce((s,i)=>s+i.total,0));$('#dRecent').innerHTML=list(a.slice(0,5),0)}
+async function renderDash(){const a=await getAll();$('#dCount').textContent=a.length;$('#dSales').textContent=fmt(a.reduce((s,i)=>s+i.total,0));const mo=today().slice(0,7);$('#dMonth').textContent=fmt(a.filter(i=>i.date.startsWith(mo)).reduce((s,i)=>s+i.total,0));$('#dRecent').innerHTML=list(a.slice(0,5),0)}
 async function renderHist(){const q=$('#q').value.trim().toLowerCase(),f=$('#fDate').value;const a=(await getAll()).filter(i=>(!q||i.name.toLowerCase().includes(q)||i.number.toLowerCase().includes(q))&&(!f||i.date===f));$('#hList').innerHTML=list(a,1)}
 $('#q').oninput=$('#fDate').onchange=renderHist;$('#clearF').onclick=()=>{$('#q').value=$('#fDate').value='';renderHist()};
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-open],[data-print],[data-del]');if(!b)return;const id=b.dataset.open||b.dataset.print||b.dataset.del;const inv=(await getAll()).find(i=>i.id===id);if(!inv)return;
