@@ -13,7 +13,7 @@ Open the app once while online (this caches it). Then use the **Install App** bu
 ## Notes
 - Invoices live in this browser's IndexedDB on this device only. Use **Backup → Export** regularly; **Restore** merges a backup file.
 - PDF is built in-app (no libraries; amounts show as "NGN" in the PDF because the standard PDF font has no ₦ glyph). **Print Invoice** uses the browser dialog (A4) and shows the ₦ sign.
-- Files: index.html, css/style.css, js/app.js, sw.js, manifest.webmanifest, icons/.
+- Files (all in one folder): index.html, style.css, app.js, sw.js, manifest.webmanifest, icon files.
 - After editing any file, bump `V` in sw.js so devices refresh the cache.
 
 ## Cross-platform (one codebase)
