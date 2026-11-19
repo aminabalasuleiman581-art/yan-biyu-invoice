@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Yan Biyu Global Concept – Invoices</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0b1f3f">
+<link rel="icon" href="icons/icon.svg"><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<header class="top"><div><b>YAN BIYU GLOBAL CONCEPT</b><small>Premium Household Goods – Quality You Trust.</small></div>
+<nav><button data-view="dash">Dashboard</button><button data-view="new">New Invoice</button><button data-view="hist">Invoices</button><button data-view="backup">Backup</button><button id="install" hidden>Install App</button></nav></header>
+<main>
+<section id="dash" class="view"><h2>Dashboard</h2>
+<div class="cards"><div class="card"><span>Total Invoices Created</span><b id="dCount">0</b></div><div class="card"><span>Total Sales Recorded</span><b id="dSales">₦0.00</b></div></div>
+<p><button class="gold" data-go="new">+ Create New Invoice</button> <button data-go="hist">View All Invoices</button></p>
+<h3>Recent Invoices</h3><div id="dRecent"></div></section>
+
+<section id="new" class="view"><h2>New Invoice</h2>
+<div class="grid">
+<label>Customer Name *<input id="cName" maxlength="80" autocomplete="off"></label>
+<label>Customer Phone (optional)<input id="cPhone" type="tel" maxlength="20"></label>
+<label>Invoice Number<input id="iNo" readonly></label>
+<label>Invoice Date<input id="iDate" type="date"></label></div>
+<div class="scroll"><table id="items"><thead><tr><th>Item Description</th><th>Quantity</th><th>Unit Price (₦)</th><th>Amount (₦)</th><th></th></tr></thead><tbody></tbody></table></div>
+<p><button id="addRow" class="gold">+ ADD ITEM</button></p>
+<div class="totals"><label>Discount (₦, optional)<input id="disc" type="number" min="0" step="any" value="0"></label>
+<p>Subtotal: <b id="tSub">₦0.00</b></p><p>Discount: <b id="tDisc">₦0.00</b></p><p class="big">Grand Total: <b id="tGrand">₦0.00</b></p></div>
+<p id="err" class="err"></p>
+<p><button id="save" class="gold">Save Invoice</button> <button id="reset">Clear Form</button></p></section>
+
+<section id="hist" class="view"><h2>Invoice History</h2>
+<div class="grid"><label>Search customer or invoice number<input id="q" placeholder="Type to search…"></label><label>Filter by date<input id="fDate" type="date"></label></div>
+<p><button id="clearF">Clear Filters</button></p><div id="hList"></div></section>
+
+<section id="view" class="view"><p class="noprint"><button data-go="hist">← Back</button> <button id="bPrint" class="gold">PRINT INVOICE</button> <button id="bPdf" class="gold">DOWNLOAD PDF</button></p><div id="sheetBox"></div></section>
+
+<section id="backup" class="view"><h2>Backup &amp; Restore</h2>
+<p>Invoices are stored in this browser on this device only. Clearing browser data or changing device will lose them unless you export a backup.</p>
+<p><button id="bExp" class="gold">Export Backup (JSON)</button></p>
+<p><label>Restore from backup file<input id="bImp" type="file" accept=".json,application/json"></label></p><p id="bMsg"></p></section>
+</main>
+<div id="toast"></div>
+<script src="js/app.js"></script></body></html>
